@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<style>
+    .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background: linear-gradient(135deg, var(--bg) 0%, #e2e8f0 100%);
+        padding: 20px;
+        position: relative;
+        overflow: hidden;
+    }
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(37,99,235,0.1) 0%, transparent 50%);
+        animation: rotate 20s linear infinite;
+        z-index: 0;
+    }
+    @keyframes rotate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 800px;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        padding: 60px 40px;
+        border-radius: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1);
+        transform: translateY(20px);
+        animation: fadeInUp 1s ease-out forwards;
+    }
+    @keyframes fadeInUp {
+        to { transform: translateY(0); opacity: 1; }
+    }
+    .hero-title {
+        font-size: 56px;
+        font-weight: 800;
+        background: linear-gradient(90deg, #2563eb, #8b5cf6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 20px;
+        line-height: 1.2;
+    }
+    .hero-subtitle {
+        font-size: 20px;
+        color: var(--text-muted);
+        margin-bottom: 40px;
+    }
+    .hero-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+    }
+    .btn-hero {
+        padding: 16px 32px;
+        font-size: 18px;
+        border-radius: 100px;
+        transition: all 0.3s ease;
+    }
+    .btn-hero:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 10px 20px -5px rgba(37,99,235,0.4);
+    }
+    .btn-outline {
+        background: transparent;
+        border: 2px solid var(--primary);
+        color: var(--primary);
+    }
+    .btn-outline:hover {
+        background: var(--primary);
+        color: white;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <div class="hero-content" style="opacity: 0;">
+        <h1 class="hero-title">Toma el control de tus finanzas</h1>
+        <p class="hero-subtitle">La forma más elegante e intuitiva de gestionar tus ingresos, categorizar tus gastos y alcanzar tus metas financieras.</p>
+        <div class="hero-buttons">
+            <a href="{% url 'registro' %}" class="btn btn-blue btn-hero">Comenzar Gratis</a>
+            <a href="{% url 'login' %}" class="btn btn-outline btn-hero">Iniciar Sesión</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

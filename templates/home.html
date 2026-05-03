@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<style>
+    .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+    }
+    .user-greeting {
+        font-size: 32px;
+        font-weight: 800;
+        margin: 0;
+        background: linear-gradient(90deg, var(--text-main), var(--primary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .summary-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        margin-bottom: 40px;
+    }
+    .summary-card {
+        padding: 30px;
+        border-radius: 24px;
+        color: white;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+        transition: transform 0.3s ease;
+    }
+    .summary-card:hover {
+        transform: translateY(-5px);
+    }
+    .summary-card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 150px;
+        height: 150px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 50%;
+        transform: translate(30%, -30%);
+    }
+    .card-income { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+    .card-expense { background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); }
+    .card-balance { background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%); }
+    
+    .summary-label {
+        margin: 0;
+        opacity: 0.9;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 13px;
+        letter-spacing: 1px;
+    }
+    .summary-value {
+        font-size: 48px;
+        margin: 10px 0 0;
+        font-weight: 800;
+    }
+    
+    .section-title {
+        font-size: 24px;
+        font-weight: 800;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .cat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
+    }
+    
+    .card-cat { 
+        padding: 25px; 
+        text-decoration: none; 
+        color: inherit; 
+        display: flex; 
+        flex-direction: column; 
+        justify-content: center; 
+        height: 120px; 
+        box-sizing: border-box;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-left-width: 6px !important;
+        border-left-style: solid;
+    }
+    .card-cat:hover { 
+        transform: translateY(-5px); 
+        box-shadow: 0 15px 30px -5px rgba(0,0,0,0.1); 
+    }
+    .cat-icon {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+    .cat-name {
+        font-weight: 700;
+        font-size: 18px;
+    }
+    .cat-meta {
+        font-size: 13px;
+        color: var(--text-muted);
+        margin-top: 5px;
+    }
+    
+    .add-btn { 
+        border: 2px dashed var(--border) !important;
+        background: transparent; 
+        align-items: center; 
+        justify-content: center; 
+        color: var(--text-muted); 
+    }
+    .add-btn:hover {
+        border-color: var(--primary) !important;
+        color: var(--primary);
+        background: rgba(79, 70, 229, 0.05);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <header class="dashboard-header">
+        <div>
+            <h1 class="user-greeting">Hola, {{ user.username }}</h1>
+            <p style="color:var(--text-muted); margin:5px 0 0; font-weight:500;">Aquí está el resumen de tu mes ({{ mes_actual }})</p>
+        </div>
+        <div style="display: flex; gap: 15px;">
+            <a href="{% url 'nuevo_ingreso' %}" class="btn" style="background:#d1fae5; color:#059669;">+ Ingreso</a>
+            <a href="{% url 'salir' %}" class="btn" style="background:#fee2e2; color:#ef4444;">Cerrar Sesión</a>
+        </div>
+    </header>
+
+    <div class="summary-cards">
+        <div class="summary-card card-income">
+            <p class="summary-label">Ingresos del Mes</p>
+            <h2 class="summary-value">${{ total_mes_ingresos|floatformat:2 }}</h2>
+        </div>
+        <div class="summary-card card-expense">
+            <p class="summary-label">Gastos del Mes</p>
+            <h2 class="summary-value">${{ total_mes_gastos|floatformat:2 }}</h2>
+        </div>
+        <div class="summary-card card-balance">
+            <p class="summary-label">Balance Total</p>
+            <h2 class="summary-value">${{ balance|floatformat:2 }}</h2>
+        </div>
+    </div>
+
+    <div class="section-title">
+        <span>Tus Categorías de Gasto</span>
+    </div>
+
+    <div class="cat-grid">
+        {% for c in categorias %}
+        <a href="{% url 'detalle_categoria' c.id %}" class="glass-card card-cat" style="border-left-color: {{ c.color }};">
+            <span class="cat-icon">{{ c.icono|default:"💰" }}</span>
+            <span class="cat-name">{{ c.nombre }}</span>
+            <span class="cat-meta">{{ c.gastos.count }} registros</span>
+        </a>
+        {% endfor %}
+        
+        <a href="{% url 'nueva_categoria' %}" class="glass-card card-cat add-btn">
+            <span style="font-size: 32px; font-weight: 300; margin-bottom: 5px;">+</span>
+            <span style="font-weight: 600;">Añadir Categoría</span>
+        </a>
+    </div>
+</div>
+{% endblock %}

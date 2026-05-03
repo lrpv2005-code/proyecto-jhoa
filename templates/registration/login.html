@@ -1,0 +1,103 @@
+<style>
+    body { 
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); 
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        height: 100vh; 
+        margin: 0; 
+    }
+
+    .login-card { 
+        background: white; 
+        padding: 40px; 
+        border-radius: 12px; 
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
+        text-align: center; 
+        width: 380px; 
+    }
+
+    .logo-area { font-size: 50px; margin-bottom: 10px; }
+    
+    h2 { color: #1e3c72; margin-bottom: 5px; font-weight: 700; }
+    
+    p { color: #636e72; font-size: 14px; margin-bottom: 30px; }
+
+    .input-group { margin-bottom: 15px; text-align: left; }
+    
+    label { font-size: 13px; font-weight: bold; color: #1e3c72; margin-left: 5px; }
+
+    input { 
+        width: 100%; 
+        padding: 12px; 
+        margin-top: 5px; 
+        border: 1px solid #dfe6e9; 
+        border-radius: 6px; 
+        box-sizing: border-box; 
+        background-color: #f1f2f6; 
+        transition: 0.3s;
+    }
+
+    input:focus { border-color: #27ae60; outline: none; background-color: #fff; }
+
+    button { 
+        width: 100%; 
+        background-color: #27ae60; 
+        color: white; 
+        border: none; 
+        padding: 14px; 
+        border-radius: 6px; 
+        font-weight: bold; 
+        cursor: pointer; 
+        transition: 0.3s; 
+        font-size: 16px; 
+        margin-top: 15px; 
+    }
+
+    button:hover { background-color: #219150; transform: translateY(-2px); }
+
+    .register-link {
+        margin-top: 25px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+        font-size: 13px;
+        color: #636e72;
+    }
+
+    .register-link a {
+        color: #1e3c72;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .register-link a:hover { text-decoration: underline; }
+
+    .footer { margin-top: 20px; font-size: 11px; color: #b2bec3; }
+</style>
+
+<div class="login-card">
+    <div class="logo-area">📊</div>
+    <h2>Control de Gastos</h2>
+    <p>Inicie sesión para gestionar sus finanzas</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="input-group">
+            <label>Nombre de Usuario</label>
+            {{ form.username }}
+        </div>
+        <div class="input-group">
+            <label>Contraseña</label>
+            {{ form.password }}
+        </div>
+        <button type="submit">ACCEDER AL PANEL</button>
+    </form>
+    
+    <div class="register-link">
+        ¿No tienes una cuenta todavía? <br>
+        <a href="/registro/">Regístrate aquí gratis</a>
+    </div>
+    
+    <div class="footer">Módulo de Autenticación v1.5 | 2026</div>
+</div>

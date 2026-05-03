@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:linear-gradient(135deg, var(--bg) 0%, #e2e8f0 100%);">
+    <div class="glass-card" style="padding:50px;width:380px;text-align:center;">
+        <div style="margin-bottom: 20px;">
+            <svg width="48" height="48" fill="none" stroke="var(--primary)" viewBox="0 0 24 24" style="margin: 0 auto;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+        </div>
+        <h2 style="font-weight:800;margin-bottom:30px;font-size:28px;">Bienvenido</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+                <div style="background-color: #fee2e2; color: #ef4444; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 14px;">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+            {{ form.username.errors }}
+            <input type="text" name="{{ form.username.name }}" placeholder="Usuario" required class="form-input">
+            {{ form.password.errors }}
+            <input type="password" name="{{ form.password.name }}" placeholder="Contraseña" required class="form-input" style="margin-bottom:20px;">
+            <button type="submit" class="btn btn-blue" style="width:100%;font-size:16px;">Entrar</button>
+        </form>
+        <p style="margin-top:25px;font-size:14px;color:var(--text-muted);">¿No tienes cuenta? <a href="{% url 'registro' %}" style="color:var(--primary);font-weight:700;text-decoration:none;">Regístrate</a></p>
+    </div>
+</div>
+{% endblock %}

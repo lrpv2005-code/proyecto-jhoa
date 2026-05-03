@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div style="margin-bottom: 30px;">
+        <a href="{% url 'home' %}" style="color: var(--text-muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px;">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Volver al Dashboard
+        </a>
+    </div>
+
+    <header style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
+        <div>
+            <h1 style="font-size:36px; font-weight:800; margin:0; display:flex; align-items:center;">
+                <span style="display:inline-flex; justify-content:center; align-items:center; width:48px; height:48px; border-radius:16px; background:{{ categoria.color }}20; color:{{ categoria.color }}; margin-right:20px; font-size:24px;">
+                    {{ categoria.icono|default:"💰" }}
+                </span>
+                {{ categoria.nombre }}
+            </h1>
+        </div>
+    </header>
+
+    <div style="display: flex; gap: 40px; align-items: flex-start; flex-wrap: wrap;">
+        <!-- Formulario para agregar gasto -->
+        <div class="glass-card" style="padding: 30px; width: 100%; max-width: 350px; flex-shrink: 0;">
+            <h3 style="margin-top: 0; font-weight: 800; margin-bottom: 25px; font-size: 20px;">Añadir Gasto</h3>
+            <form method="post">
+                {% csrf_token %}
+                <div style="margin-bottom: 15px;">
+                    {{ form.descripcion.errors }}
+                    {{ form.descripcion }}
+                </div>
+                <div style="margin-bottom: 20px;">
+                    {{ form.monto.errors }}
+                    {{ form.monto }}
+                </div>
+                <button type="submit" class="btn btn-blue" style="width: 100%;">Guardar Gasto</button>
+            </form>
+        </div>
+
+        <!-- Lista de gastos -->
+        <div style="flex-grow: 1; min-width: 300px;">
+            <h3 style="margin-top: 0; font-weight: 800; margin-bottom: 25px; font-size: 20px;">Historial de Gastos</h3>
+            
+            {% if gastos %}
+                <div class="glass-card" style="overflow: hidden; padding: 0;">
+                    {% for gasto in gastos %}
+                    <div style="padding: 20px 25px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.5)'" onmouseout="this.style.background='transparent'">
+                        <div>
+                            <p style="margin: 0; font-weight: 700; font-size: 16px;">{{ gasto.descripcion }}</p>
+                            <p style="margin: 5px 0 0; font-size: 13px; color: var(--text-muted); font-weight: 500;">{{ gasto.fecha|date:"d M Y, H:i" }}</p>
+                        </div>
+                        <div style="font-weight: 800; font-size: 20px; color: var(--text-main);">
+                            -${{ gasto.monto|floatformat:2 }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="glass-card" style="text-align: center; padding: 60px 20px; border: 2px dashed var(--border); color: var(--text-muted);">
+                    <svg width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-bottom: 15px; opacity: 0.5;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                    <p style="margin: 0; font-weight: 600;">No hay gastos registrados en esta categoría aún.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

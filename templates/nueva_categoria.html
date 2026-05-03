@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div style="margin-bottom: 30px;">
+        <a href="{% url 'home' %}" style="color: var(--text-muted); text-decoration: none; font-weight: 500;">&larr; Volver al inicio</a>
+    </div>
+
+    <div class="glass-card" style="padding: 40px; border-radius: 20px; max-width: 500px; margin: 0 auto; box-shadow: 0 10px 25px rgba(0,0,0,0.05);">
+        <h2 style="font-weight:800; margin-bottom:20px;">Nueva Categoría</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.nombre.errors }}
+            {{ form.nombre }}
+            <p style="font-size:13px; color:var(--text-muted); margin-bottom:5px;">Color de la tarjeta:</p>
+            {{ form.color.errors }}
+            {{ form.color }}
+            <button type="submit" class="btn btn-blue" style="width:100%;">Crear Categoría</button>
+            <a href="{% url 'home' %}" style="display:block; text-align:center; margin-top:15px; color:var(--text-muted); font-size:14px; text-decoration:none; font-weight:600;">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
