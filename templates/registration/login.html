@@ -74,6 +74,26 @@
     .register-link a:hover { text-decoration: underline; }
 
     .footer { margin-top: 20px; font-size: 11px; color: #b2bec3; }
+
+    .password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    padding-right: 40px;
+}
+
+.eye {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    color: #1e3c72;
+    user-select: none;
+}
+
 </style>
 
 <div class="login-card">
@@ -87,10 +107,14 @@
             <label>Nombre de Usuario</label>
             {{ form.username }}
         </div>
-        <div class="input-group">
-            <label>Contraseña</label>
-            {{ form.password }}
-        </div>
+        <div class="input-group password-container">
+    <label>Contraseña</label>
+    <div class="password-wrapper">
+        {{ form.password }}
+        <span id="togglePassword" class="eye">👁️</span>
+    </div>
+</div>
+
         <button type="submit">ACCEDER AL PANEL</button>
     </form>
     

@@ -83,5 +83,16 @@
 <body>
     {% block content %}
     {% endblock %}
+
+    <script>
+    const passwordInput = document.querySelector('input[type="password"]');
+    const toggle = document.getElementById("togglePassword");
+
+    toggle.addEventListener("click", () => {
+        const type = passwordInput.type === "password" ? "text" : "password";
+        passwordInput.type = type;
+    });
+</script>
+
 </body>
 </html>
