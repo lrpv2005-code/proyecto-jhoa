@@ -117,6 +117,9 @@ USE_TZ = True
 
 LANGUAGE_CODE = 'es-es'
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 

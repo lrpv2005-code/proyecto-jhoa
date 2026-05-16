@@ -7,17 +7,78 @@
     </div>
 
     <div class="glass-card" style="padding: 40px; border-radius: 20px; max-width: 500px; margin: 0 auto; box-shadow: 0 10px 25px rgba(0,0,0,0.05);">
-        <h2 style="font-weight:800; margin-bottom:20px;">Nueva Categoría</h2>
+        <h2 style="font-weight:800; margin-bottom:20px;">{{ titulo|default:"Nueva Categoría" }}</h2>
         <form method="post">
             {% csrf_token %}
             {{ form.nombre.errors }}
             {{ form.nombre }}
-            <p style="font-size:13px; color:var(--text-muted); margin-bottom:5px;">Color de la tarjeta:</p>
+            
+            <p style="font-size:13px; color:var(--text-muted); margin-bottom:10px;">Selecciona un ícono:</p>
+            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 25px;" id="icon-picker">
+                {% for icon_id, icon_svg in icons.items %}
+                <div class="icon-option" data-id="{{ icon_id }}" style="padding: 10px; border: 2px solid var(--border); border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events: none;">
+                        {{ icon_svg|safe }}
+                    </svg>
+                </div>
+                {% endfor %}
+                <div class="icon-option" data-id="none" style="padding: 10px; border: 2px solid var(--border); border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--text-muted);">
+                    Sin ícono
+                </div>
+            </div>
+            {{ form.icono }}
+
+            <p style="font-size:13px; color:var(--text-muted); margin-bottom:5px;">Color de la categoría:</p>
             {{ form.color.errors }}
             {{ form.color }}
-            <button type="submit" class="btn btn-blue" style="width:100%;">Crear Categoría</button>
+
+            <button type="submit" class="btn btn-blue" style="width:100%;">{% if es_edicion %}Guardar Cambios{% else %}Crear Categoría{% endif %}</button>
             <a href="{% url 'home' %}" style="display:block; text-align:center; margin-top:15px; color:var(--text-muted); font-size:14px; text-decoration:none; font-weight:600;">Cancelar</a>
         </form>
     </div>
 </div>
+
+<style>
+    .icon-option.active {
+        border-color: var(--primary) !important;
+        background: rgba(79, 70, 229, 0.05);
+        color: var(--primary) !important;
+    }
+</style>
+
+<script>
+    const iconPicker = document.getElementById('icon-picker');
+    const iconInput = document.getElementById('category-icon');
+    const colorInput = document.getElementById('category-color');
+    const options = document.querySelectorAll('.icon-option');
+
+    options.forEach(opt => {
+        opt.addEventListener('click', () => {
+            options.forEach(o => o.classList.remove('active'));
+            opt.classList.add('active');
+            iconInput.value = opt.dataset.id;
+            updateIconColors();
+        });
+    });
+
+    function updateIconColors() {
+        const color = colorInput.value;
+        options.forEach(opt => {
+            if (opt.classList.contains('active')) {
+                opt.style.color = color;
+                opt.style.borderColor = color;
+            } else {
+                opt.style.color = 'var(--text-muted)';
+                opt.style.borderColor = 'var(--border)';
+            }
+        });
+    }
+
+    colorInput.addEventListener('input', updateIconColors);
+    
+    // Select first icon by default if none selected
+    if (!iconInput.value) {
+        options[0].click();
+    }
+</script>
 {% endblock %}

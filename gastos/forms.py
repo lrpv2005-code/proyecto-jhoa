@@ -4,10 +4,11 @@ from .models import Categoria, Gasto, Ingreso, Presupuesto
 class CategoriaForm(forms.ModelForm):
     class Meta:
         model = Categoria
-        fields = ['nombre', 'color']
+        fields = ['nombre', 'color', 'icono']
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Nombre de la categoría'}),
-            'color': forms.TextInput(attrs={'type': 'color', 'class': 'form-color'}),
+            'color': forms.TextInput(attrs={'type': 'color', 'class': 'form-color', 'id': 'category-color'}),
+            'icono': forms.HiddenInput(attrs={'id': 'category-icon'}),
         }
 
 class GastoForm(forms.ModelForm):

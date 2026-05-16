@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tracker de Gastos</title>
+    {% load static %}
+    <link rel="icon" type="image/png" href="{% static 'BCO.cf4df18a-fc9e-4bd2-a638-92abba088080.png' %}?v=1.1">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -79,10 +81,15 @@
         }
     </style>
     {% block extra_css %}{% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     {% block content %}
     {% endblock %}
+
+    <footer style="margin-top: 50px; padding: 40px 20px; text-align: center; color: var(--text-muted); font-size: 14px; border-top: 1px solid var(--border);">
+        <p style="margin: 0; opacity: 0.8;">&copy; 2026 Tracker de gastos. Proyecto Lenguaje de Programación 2.</p>
+    </footer>
 
     <script>
     const passwordInput = document.querySelector('input[type="password"]');
@@ -94,5 +101,6 @@
     });
 </script>
 
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

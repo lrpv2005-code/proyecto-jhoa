@@ -1,10 +1,11 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 <div style="display:flex;align-items:center;justify-content:center;height:100vh;background:linear-gradient(135deg, var(--bg) 0%, #e2e8f0 100%);">
     <div class="glass-card" style="padding:50px;width:380px;text-align:center;">
-        <div style="margin-bottom: 20px;">
-            <svg width="48" height="48" fill="none" stroke="var(--primary)" viewBox="0 0 24 24" style="margin: 0 auto;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+        <div style="width: 110px; height: 110px; border-radius: 50%; overflow: hidden; margin: 0 auto 30px; border: 3px solid #ffffff; box-shadow: 0 8px 16px rgba(0,0,0,0.1); background: white; display: flex; align-items: center; justify-content: center;">
+            <img src="{% static 'BCO.cf4df18a-fc9e-4bd2-a638-92abba088080.png' %}" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
         <h2 style="font-weight:800;margin-bottom:30px;font-size:28px;">Bienvenido</h2>
         <form method="post">
@@ -17,10 +18,46 @@
             {{ form.username.errors }}
             <input type="text" name="{{ form.username.name }}" placeholder="Usuario" required class="form-input">
             {{ form.password.errors }}
-            <input type="password" name="{{ form.password.name }}" placeholder="Contraseña" required class="form-input" style="margin-bottom:20px;">
+            <!-- ojito -->
+            <div style="position: relative; margin-bottom: 20px;">
+                <input type="password" id="id_password" name="{{ form.password.name }}" placeholder="Contraseña" required class="form-input" style="margin-bottom:0; padding-right:40px; width:100%; box-sizing:border-box;">
+                <button type="button" onclick="togglePasswordVisibility()" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; z-index: 10;" title="Mostrar/Ocultar contraseña">
+                    <svg id="eyeIcon" style="pointer-events: none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                    <svg id="eyeOffIcon" style="pointer-events: none; display: none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                        <line x1="1" y1="1" x2="23" y2="23"></line>
+                    </svg>
+                </button>
+            </div>
+            <!-- fin ojito -->
             <button type="submit" class="btn btn-blue" style="width:100%;font-size:16px;">Entrar</button>
         </form>
         <p style="margin-top:25px;font-size:14px;color:var(--text-muted);">¿No tienes cuenta? <a href="{% url 'registro' %}" style="color:var(--primary);font-weight:700;text-decoration:none;">Regístrate</a></p>
     </div>
 </div>
+
+<!-- script ojito -->
+<script>
+    function togglePasswordVisibility() {
+        const passwordInput = document.getElementById('id_password');
+        const eyeIcon = document.getElementById('eyeIcon');
+        const eyeOffIcon = document.getElementById('eyeOffIcon');
+
+        if (passwordInput && eyeIcon && eyeOffIcon) {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.style.display = 'none';
+                eyeOffIcon.style.display = 'block';
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.style.display = 'block';
+                eyeOffIcon.style.display = 'none';
+            }
+        }
+    }
+</script>
+<!-- fin script ojito -->
 {% endblock %}

@@ -12,13 +12,37 @@
     <header style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
         <div>
             <h1 style="font-size:36px; font-weight:800; margin:0; display:flex; align-items:center;">
-                <span style="display:inline-flex; justify-content:center; align-items:center; width:48px; height:48px; border-radius:16px; background:{{ categoria.color }}20; color:{{ categoria.color }}; margin-right:20px; font-size:24px;">
-                    {{ categoria.icono|default:"💰" }}
-                </span>
+                <a href="{% url 'editar_categoria' categoria.id %}" title="Cambiar ícono o color" style="text-decoration:none; display:inline-flex; justify-content:center; align-items:center; width:54px; height:54px; border-radius:18px; background:{{ categoria.color }}20; color:{{ categoria.color }}; margin-right:20px; transition:all 0.2s; border: 2px solid transparent;" onmouseover="this.style.transform='scale(1.1)'; this.style.borderColor='{{ categoria.color }}'" onmouseout="this.style.transform='scale(1)'; this.style.borderColor='transparent'">
+                    {% if categoria.icono != "none" %}
+                        {% for icon_id, icon_svg in icons.items %}
+                            {% if icon_id == categoria.icono %}
+                                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    {{ icon_svg|safe }}
+                                </svg>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        {# Fallback ONLY for emojis (not for SVG IDs) #}
+                        {% if categoria.icono not in icons.keys and categoria.icono != "none" %}
+                            {{ categoria.icono }}
+                        {% endif %}
+                    {% endif %}
+                </a>
                 {{ categoria.nombre }}
             </h1>
         </div>
+        <div>
+            <button onclick="confirmarEliminar()" class="btn" style="background:#fee2e2; color:#ef4444; border: 1px solid #fecaca; font-size: 14px; padding: 10px 20px;">Eliminar Categoría</button>
+        </div>
     </header>
+
+    <script>
+    function confirmarEliminar() {
+        if (confirm('¿Estás seguro de que quieres eliminar esta categoría? Se borrarán todos los gastos asociados.')) {
+            window.location.href = "{% url 'eliminar_categoria' categoria.id %}";
+        }
+    }
+    </script>
 
     <div style="display: flex; gap: 40px; align-items: flex-start; flex-wrap: wrap;">
         <!-- Formulario para agregar gasto -->
